@@ -65,7 +65,7 @@ export function Atmosphere() {
 
   return (
     <mesh position-y={14}>
-      <icosahedronGeometry args={[15, 3]} />
+      <icosahedronGeometry args={[14, 3]} />
       <CustomShaderMaterial
         baseMaterial={MeshStandardMaterial}
         {...shader}
