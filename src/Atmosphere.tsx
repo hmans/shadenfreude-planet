@@ -2,12 +2,14 @@ import { useFrame } from "@react-three/fiber";
 import { useMemo } from "react";
 import {
   Add,
+  Bool,
   code,
   compileShader,
   CustomShaderMaterialMaster,
   Div,
   Float,
   Fresnel,
+  GLSLType,
   JoinVector3,
   Mul,
   Simplex3DNoise,
@@ -23,6 +25,14 @@ const Clamp = (x: Value<"float">, min: Value<"float">, max: Value<"float">) =>
   Float(code`clamp(${x}, ${min}, ${max})`);
 
 const Clamp01 = (x: Value<"float">) => Clamp(x, 0, 1);
+
+const IsFrontFacing = () => Bool(code`gl_FrontFacing`, { only: "fragment" });
+
+const If = <T extends GLSLType>(
+  expression: Value<"bool">,
+  then: Value<T>,
+  else_: Value<T>
+) => code`(${expression} ? ${then} : ${else_})`;
 
 export function Atmosphere() {
   const [shader, update] = useMemo(() => {
@@ -46,7 +56,7 @@ export function Atmosphere() {
 
     return compileShader(
       CustomShaderMaterialMaster({
-        alpha: Add(Mul(clouds, 0.8), Mul(Fresnel(), 0.05)),
+        alpha: Add(Mul(clouds, 0.8), Mul(Fresnel(), 0.2)),
       })
     );
   }, []);
