@@ -26,14 +26,6 @@ const Clamp = (x: Value<"float">, min: Value<"float">, max: Value<"float">) =>
 
 const Clamp01 = (x: Value<"float">) => Clamp(x, 0, 1);
 
-const IsFrontFacing = () => Bool(code`gl_FrontFacing`, { only: "fragment" });
-
-const If = <T extends GLSLType>(
-  expression: Value<"bool">,
-  then: Value<T>,
-  else_: Value<T>
-) => code`(${expression} ? ${then} : ${else_})`;
-
 export function Atmosphere() {
   const [shader, update] = useMemo(() => {
     const t = Div(Time, 35);
